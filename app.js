@@ -1,4 +1,3 @@
-//@ts-check
 const express = require('express'),
   path = require('path'),
   favicon = require('serve-favicon'),
@@ -6,15 +5,14 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   expressHbs = require('express-handlebars'),
-  mongoose = require('mongoose')
+  mongoose = require('./db'),
+  dotenv = require('dotenv').config()
 
 
 let index = require('./routes/index')
 let users = require('./routes/users')
 
 let app = express()
-
-mongoose.connect('localhost:27017/asker-sd')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -35,7 +33,6 @@ app.use('/users', users)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   let err = new Error('Not Found')
-  err.status = 404
   next(err)
 })
 

@@ -1,11 +1,10 @@
-//@ts-check
 const express = require('express'),
   router = express.Router(),
   User = require('../models/user')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  User.find((err, docs) => {
+  User.find((err, docs) => {    
     let usersParts = [],
       partSize = 3
     for (let i = 0; i < docs.length; i += partSize) {
@@ -16,7 +15,6 @@ router.get('/', function (req, res, next) {
       title: 'Sportsko društvo ASKER',
       users: usersParts
     }
-    console.log(options)
     res.render('members/index', options)
   })
 })

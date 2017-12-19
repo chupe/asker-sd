@@ -1,8 +1,7 @@
-//@ts-check
 const User = require('../models/user'),
-  mongoose = require('mongoose')
+  connection = require('../db').mongoose
 
-mongoose.connect('localhost:27017/asker-sd')
+  connection.on('open', seed)
 
 let users = [
   new User({
@@ -31,17 +30,21 @@ let users = [
   }),
 ]
 
-let done = 0
+function seed() {
+  let done = 0
 
-for (let i = 0; i < users.length; i++) {
-  users[i].save((err, result) => {
-    done++
-    if (done === users.length){
-      exit()
-    }
-  })
-}
+  for (let i = 0; i < users.length; i++) {
+    users[i].save((err, result) => {
+      done++
+      if (done === users.length) {
+        exit()
+      }
+    })
+  }
 
-function exit() {
-  mongoose.disconnect()
+  function exit() {
+    connection.close()
+    console.log('DB connection closed')
+    
+  }
 }
