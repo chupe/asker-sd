@@ -1,13 +1,30 @@
 const mongoose = require('mongoose'),
-Schema = mongoose.Schema
+  connection = require('../db'),
+  Schema = mongoose.Schema,
+  bcrypt = require('bcrypt-nodejs')
 
-let schema = new Schema({
-  username: {type: String, required: true},
-  first_name: {type: String, required: true},
-  last_name: {type: String, required: true},
-  email: {type: String, required: true},
-  image: {type: String, required: true},
-  phone_no: {type: Number, required: true}
+const defaults = {
+  image: 'https://cdn4.iconfinder.com/data/icons/professions-2-2/151/81-512.png'
+}
+  
+let userSchema = new Schema({
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  username: { type: String, required: false },
+  first_name: { type: String, required: false },
+  last_name: { type: String, required: false },
+  image: { type: String, required: false, default: defaults.image },
+  phone_no: { type: Number, required: false }
 })
 
-module.exports = mongoose.model('User', schema)
+userSchema.methods.encryptPassword = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(5))
+}
+
+userSchema.methods.validPassword = (password) => {
+  return bcrypt.compareSync(password, this.password)
+}
+
+let User = mongoose.model('User', userSchema)
+
+module.exports = User

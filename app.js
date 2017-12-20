@@ -6,11 +6,15 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   expressHbs = require('express-handlebars'),
   mongoose = require('./db'),
-  dotenv = require('dotenv').config()
+  dotenv = require('dotenv').config(),
+  session = require('express-session'),
+  passport = require('passport'),
+  flash = require('connect-flash')
 
 
-let index = require('./routes/index')
-let users = require('./routes/users')
+let index = require('./routes/members')
+
+require('./config/passport')
 
 let app = express()
 
@@ -22,13 +26,16 @@ app.set('view engine', '.hbs')
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(session({ secret: 'superSecret', resave: false, saveUninitialized: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(flash())
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', index)
-app.use('/users', users)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
