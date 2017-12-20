@@ -9,7 +9,8 @@ const express = require('express'),
   dotenv = require('dotenv').config(),
   session = require('express-session'),
   passport = require('passport'),
-  flash = require('connect-flash')
+  flash = require('connect-flash'),
+  validator = require('express-validator')
 
 
 let index = require('./routes/members')
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({ secret: 'superSecret', resave: false, saveUninitialized: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(validator())
 app.use(cookieParser())
 app.use(flash())
 app.use(passport.initialize())
