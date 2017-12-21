@@ -13,7 +13,8 @@ const express = require('express'),
   validator = require('express-validator')
 
 
-let index = require('./routes/members')
+let index = require('./routes/index')
+let user = require('./routes/user')
 
 require('./config/passport')
 
@@ -37,6 +38,12 @@ app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.use((req, res, next) => {
+  res.locals.login = req.isAuthenticated()
+  next()
+})
+
+app.use('/user', user)
 app.use('/', index)
 
 // catch 404 and forward to error handler
