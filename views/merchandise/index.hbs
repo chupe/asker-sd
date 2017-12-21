@@ -1,0 +1,20 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+
+{{# each merch }}
+<div class="row">
+  {{# each this}}
+  <div class="col-sm-4">
+    <div class="card" style="width: 20rem;">
+      <img class="card-img-top" src="{{this.image}}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">{{this.name}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{this.price}}KM</h6>
+        <p class="card-text">Podrži rad sportskog društva ASKER i naruči!</p>
+        <a href="#" class="btn btn-primary">Dodaj u košaricu</a>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+{{/each}}

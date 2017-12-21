@@ -1,5 +1,4 @@
 const mongoose = require('mongoose'),
-  connection = require('../db'),
   Schema = mongoose.Schema,
   bcrypt = require('bcrypt-nodejs')
 

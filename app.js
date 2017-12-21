@@ -5,16 +5,20 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   expressHbs = require('express-handlebars'),
-  mongoose = require('./db'),
+  dbConnection = require('./db'),
   dotenv = require('dotenv').config(),
   session = require('express-session'),
   passport = require('passport'),
   flash = require('connect-flash'),
-  validator = require('express-validator')
+  validator = require('express-validator'),
+  MongoStore = require('connect-mongo')(session)
 
 
-let index = require('./routes/index')
-let user = require('./routes/user')
+let index = require('./routes/index'),
+  user = require('./routes/user'),
+  members = require('./routes/members'),
+  merchandise = require('./routes/merchandise')
+
 
 require('./config/passport')
 
@@ -29,7 +33,13 @@ app.set('view engine', '.hbs')
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(session({ secret: 'superSecret', resave: false, saveUninitialized: false }))
+app.use(session({
+  secret: 'superSecret',
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: dbConnection }),
+  cookie: { maxAge: 180 * 60 * 1000 }
+}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(validator())
@@ -40,10 +50,13 @@ app.use(passport.session())
 
 app.use((req, res, next) => {
   res.locals.login = req.isAuthenticated()
+  res.locals.session = req.session
   next()
 })
 
 app.use('/user', user)
+app.use('/members', members)
+app.use('/merchandise', merchandise)
 app.use('/', index)
 
 // catch 404 and forward to error handler

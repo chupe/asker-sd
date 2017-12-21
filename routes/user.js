@@ -1,8 +1,8 @@
 const express = require('express'),
-router = express.Router(),
-User = require('../models/user'),
-csrf = require('csurf'),
-passport = require('passport')
+  router = express.Router(),
+  User = require('../models/user'),
+  csrf = require('csurf'),
+  passport = require('passport')
 
 let csrfProtection = csrf({})
 router.use(csrfProtection)

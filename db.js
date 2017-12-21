@@ -17,4 +17,4 @@ let local = 'mongodb://127.0.0.1:27017/asker-sd'
 mongoose.connect(uri, { useMongoClient: true })
 let connection = mongoose.connection
 
-module.exports.mongoose = connection
+module.exports = connection
