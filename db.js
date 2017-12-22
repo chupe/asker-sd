@@ -14,7 +14,7 @@ console.log('DB script initialized')
 let uri = `mongodb://${user}:${pass}@${srv1},${srv2},${srv3}`
 let local = 'mongodb://127.0.0.1:27017/asker-sd'
 
-mongoose.connect(uri, { useMongoClient: true })
+mongoose.connect(local, { useMongoClient: true })
 let connection = mongoose.connection
 
 module.exports = connection

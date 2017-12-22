@@ -6,11 +6,11 @@ const defaults = {
 }
 
 let merchSchema = new Schema({
+  // id: { type: String, required: false },
   name: { type: String, required: true },
-  id: { type: String, required: false },
-  price: { type: String, required: false },
+  price: { type: Number, required: false },
   image: { type: String, required: false, default: defaults.image },
-  available: { type: Boolean, required: false }
+  available: { type: Number, required: false }
 })
 
 let Merchandise = mongoose.model('Merchandise', merchSchema)
